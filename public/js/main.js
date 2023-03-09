@@ -7,6 +7,7 @@ const submitBtn = document.querySelector("#submitBtn");
 
 while (!username || !username.trim()) {
   username = prompt("Enter your username: ");
+  localStorage.setItem("username", username);
 }
 
 const chatBot = new ChatBot(username, messagesContainer, userInputBox, submitBtn);

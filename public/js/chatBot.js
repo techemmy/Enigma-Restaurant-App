@@ -18,7 +18,6 @@ class ChatBot {
         submitBtn.addEventListener('click', (e) => {
            e.preventDefault();
            const input = this.getUserInput();
-           // TODO: Use joi to validate
            const validatedInput = this.validate(input);
            if (validatedInput) this.processInput(message);
         })

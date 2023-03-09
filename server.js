@@ -27,13 +27,8 @@ app.get("/", (req, res) => {
 })
 
 app.get("/chat", (req, res) => {
-    if (!req.session.views) {
-        req.session.views = 0;
-      }
-      req.session.views++;
-      console.log(req.session.views);
 
-    res.render("chat", {views: req.session.views})
+    res.render("chat")
 })
 
 server.listen(process.env.PORT || 8000, () => {

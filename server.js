@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 var session = require('express-session')
+const fs = require("fs");
 require('dotenv').config();
 
 
@@ -24,6 +25,16 @@ app.get("/", (req, res) => {
     console.log(req.session);
     console.log(req.session.cookie);
     res.render("index");
+})
+
+app.get("/orderItems", (req, res) => {
+    const orderItems = fs.readFile("database/orderItems.json", (err, data) => {
+        if (err) {
+            return res.json(err.message);
+        }
+        const items = Buffer.from(data, "utf-8").toString();
+        return res.json(items)
+    });
 })
 
 app.get("/chat", (req, res) => {

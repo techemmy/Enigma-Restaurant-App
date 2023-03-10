@@ -1,25 +1,46 @@
 const express = require('express');
-const app = express();
 const http = require('http');
-const server = http.createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(server);
 var session = require('express-session')
 const fs = require("fs");
 require('dotenv').config();
 
-
-
-app.use(express.static("public"))
-app.set('view engine', 'ejs');
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
 ONEDAY = 1000 * 60 * 60 * 24;
-app.use(session({
+const sessionMiddleware = session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { httpOnly: true, maxAge: ONEDAY }
-  }))
+    // cookie: { httpOnly: true, maxAge: ONEDAY }
+  });
+
+app.set('view engine', 'ejs');
+app.use(express.static("public"))
+app.use(sessionMiddleware);
+
+// convert a connect middleware to a Socket.IO middleware
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next);
+
+io.use(wrap(sessionMiddleware));
+
+// only allow authenticated users
+io.use((socket, next) => {
+    console.log("here")
+    console.log(socket.request.session);
+//   const session = socket.request.session;
+//   if (session && session.authenticated) {
+//     next();
+//   } else {
+//     next(new Error("unauthorized"));
+//   }
+});
+
+io.on("connection", (socket) => {
+  console.log(socket.request.session);
+});
 
 app.get("/", (req, res) => {
     console.log(req.session);

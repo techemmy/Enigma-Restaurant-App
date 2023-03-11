@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 })
 
 app.get("/orderItems", (req, res) => {
-    const orderItems = fs.readFile("database/orderItems.json", (err, data) => {
+    fs.readFile("database/orderItems.json", (err, data) => {
         if (err) {
             return res.json(err.message);
         }

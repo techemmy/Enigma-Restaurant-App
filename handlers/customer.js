@@ -1,10 +1,10 @@
 const getCustomer = function () {
   socket = this;
-  const customer = socket.request.session.customer;
-  if (!customer) {
+  const customerSession = socket.request.session.customerSession;
+  if (!customerSession) {
     return socket.emit("customer:create");
   } else {
-    return socket.emit("customer:post", customer);
+    return socket.emit("customer:post", customerSession);
   }
 };
 

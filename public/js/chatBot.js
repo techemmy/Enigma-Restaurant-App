@@ -1,21 +1,22 @@
 class ChatBot {
-    constructor(username, messages, userInput, submitBtn) {
-        this.states = {
-            0: "CHOOSE_OPTION",
-            1: "SELECT_ORDERITEM",
-        }
+    commands = {
+        1: "Place an Order",
+        97: "See current order",
+        98: "See order history",
+        99: "Checkout order",
+        0: "Cancel Order"
+    }
+    states = {
+        0: "CHOOSE_OPTION",
+        1: "SELECT_ORDERITEM",
+    }
+    constructor(user, messages, userInput, submitBtn) {
         this.state = this.states[0];
-        this.username = username;
+        this.user = user;
         this.messages = messages;
         this.userInput = userInput;
         this.submitBtn = submitBtn;
-        this.commands = {
-            1: "Place an Order",
-            97: "See current order",
-            98: "See order history",
-            99: "Checkout order",
-            0: "Cancel Order"
-        }
+
         this.chatOptions = this.commands;
 
         this.showWelcomeMessage();
@@ -38,7 +39,7 @@ class ChatBot {
     }
 
     showWelcomeMessage() {
-        this.sendMessage(`Welcome ${this.username}`)
+        this.sendMessage(`Welcome ${this.user.name}`)
     }
 
     showChatOptions() {

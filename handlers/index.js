@@ -1,10 +1,12 @@
 const { getCustomer } = require("./customer");
 
 const onConnection = (socket) => {
-    console.log("Customer Connected!")
     socket.on("customer:get", getCustomer);
+    socket.on("session:update", customerSession => {
+        socket.request.session.customerSession = customerSession;
+        socket.request.session.save();
+    })
 
-    // socket.on("customer:create")
 }
 
 module.exports =  onConnection;

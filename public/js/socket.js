@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let customer;
 
     const updateCustomerSession = () => {
-        socket.emit("session:update", {customer, chatBot});
+        socket.emit("session:update", {customer});
     }
 
     socket.emit("customer:get");
@@ -28,9 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     socket.on("customer:post", customerSession => {
-        console.log(customerSession);
+        console.log("posted", customerSession)
+        customer = customerSession.customer;
+        chatBot = new ChatBot(customer, messagesContainer, userInputBox, submitBtn);
     })
-
-    socket.on("customer:post", )
 
 })

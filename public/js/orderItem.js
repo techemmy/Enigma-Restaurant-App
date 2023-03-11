@@ -2,12 +2,16 @@ class OrderItem {
     constructor(name, price) {
         this.name = name;
         this._price = parseFloat(price);
-        this.quantity = null;
+        this._quantity = null;
     }
 
     get price() {
-        if (!this.quantity) return this._price;
-        return this._price * this.quantity;
+        if (!this._quantity) return this._price;
+        return this._price * this._quantity;
+    }
+
+    set quantity(value) {
+        this._quantity = value;
     }
 }
 

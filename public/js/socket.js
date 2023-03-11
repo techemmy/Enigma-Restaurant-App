@@ -12,7 +12,9 @@ document.addEventListener("DOMContentLoaded", () => {
     let customer;
 
     const updateCustomerSession = () => {
-        socket.emit("session:update", {customer});
+      // TODO: start here
+      // BUG: implement functionality to store necessary user data in sessions
+        socket.emit("customer:update-session", {customer});
     }
 
     socket.emit("customer:get");
@@ -28,8 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     socket.on("customer:post", customerSession => {
-        console.log("posted", customerSession)
-        customer = customerSession.customer;
+      // TODO: after BUG line 15 is resolved, create new customer object from necessary customer info saved
+      customer = customerSession.customer;
         chatBot = new ChatBot(customer, messagesContainer, userInputBox, submitBtn);
     })
 

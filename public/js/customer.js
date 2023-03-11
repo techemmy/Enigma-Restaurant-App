@@ -6,6 +6,8 @@ class Customer {
     }
 
     placeOrder(orderItem) {
+        // TODO: create Order object to do the below
+        // TODO: implement adding order items to this.currentOrder
         console.log(orderItem);
     }
 }

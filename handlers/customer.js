@@ -8,6 +8,12 @@ const getCustomer = function () {
   }
 };
 
+const updateCustomerSession = (customerSession) => {
+    socket.request.session.customerSession = customerSession;
+    socket.request.session.save();
+}
+
 module.exports = {
   getCustomer,
+  updateCustomerSession
 };

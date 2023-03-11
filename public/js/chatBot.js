@@ -19,42 +19,44 @@ class ChatBot {
 
         this.chatOptions = this.commands;
 
-        this.showWelcomeMessage();
+        this.showWelcomeMessage(`Welcome ${this.user.name}`);
         this.showChatOptions();
 
         submitBtn.addEventListener('click', (e) => {
            e.preventDefault();
-           const input = this.getUserInput();
-           if (!this.validate(input)) return;
+           const message = this.getUserInput();
+           if (!this.validate(message)) return;
             this.clearUserInput();
            // if we're waiting for user to pick an option
            if (this.state === this.states[0]) {
-               this.sendMessage(input, "white", true)
-               this.processInput(parseInt(input));
+               this.sendMessage({message, user: true })
+               this.processInput(parseInt(message));
            } else if (this.state === this.states[1]) {
-                const selectedItem = this.orderItems[input];
-                this.sendMessage(`You selected: ${selectedItem[0]}`, "white", true)
+                const selectedItem = this.orderItems[message];
+                this.sendMessage({
+                    message: `You selected: ${selectedItem[0]}`,
+                    user: true
+                })
            }
         })
     }
 
-    showWelcomeMessage() {
-        this.sendMessage(`Welcome ${this.user.name}`)
+    showWelcomeMessage(message) {
+        this.sendMessage({message})
     }
 
     showChatOptions() {
-        this.sendMessage("Select one of the following to proceed:");
+        this.sendMessage({message: "Select one of the following to proceed:"});
         for (let [code, action] of Object.entries(this.chatOptions)) {
-            this.sendMessage(`Select ${code} to ${action}`);
+            this.sendMessage({message: `Select ${code} to ${action}`});
         }
     }
 
-    sendMessage(text, color=null, user=false) {
-        const message = document.createElement('li');
-        message.style.color = color;
-        if (user) message.style.backgroundColor = "brown";
-        message.textContent = text;
-        this.messages.appendChild(message);
+    sendMessage({message, backgroundColor, user}) {
+        const text = document.createElement('li');
+        if (user) text.style.backgroundColor = backgroundColor;
+        text.textContent = message;
+        this.messages.appendChild(text);
         window.scrollTo(0, document.body.scrollHeight);
     }
 
@@ -70,8 +72,8 @@ class ChatBot {
         const validOptions = Object.keys(this.chatOptions)
 
         if (!input.trim()) return
-        if (isNaN(input)) return this.sendMessage("Please enter a number 🙃", "red")
-        if(!validOptions.includes(input)) return this.sendMessage("Invalid option😩, Try again!", "red");
+        if (isNaN(input)) return this.sendMessage({message: "Please enter a number 🙃"})
+        if(!validOptions.includes(input)) return this.sendMessage({message: "Invalid option😩, Try again!"});
         return true;
     }
 
@@ -89,16 +91,16 @@ class ChatBot {
             const response = await data.json()
             return response
         } catch (error) {
-            return this.sendMessage(error.message);
+            return this.sendMessage({message: error.message});
         }
     }
 
     async placeOrder() {
         this.orderItems = JSON.parse(await this.getOrderItems());
         this.chatOptions = this.orderItems;
-        this.sendMessage("Pick an item")
+        this.sendMessage({message: "Pick an item"})
         for (let [code, item] of Object.entries(this.orderItems)) {
-            this.sendMessage(`Select ${code}: ${item[0]} at ${item[1]}`)
+            this.sendMessage({message: `Select ${code}: ${item[0]} at ${item[1]}`})
         }
         this.state = this.states[1];
     }

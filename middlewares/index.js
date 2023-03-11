@@ -1,12 +1,12 @@
-
-var session = require('express-session')
+var session = require("express-session");
 const { sessionConfiguration } = require("./../config");
-const useSocketMiddleware = require("./socket");
-
 
 const sessionMiddleware = session(sessionConfiguration);
 
-module.exports = {
-    sessionMiddleware,
-    useSocketMiddleware,
-}
+module.exports = (app, express, io) => {
+  app.set("view engine", "ejs");
+  app.use(express.static("public"));
+  app.use(sessionMiddleware);
+
+  io.engine.use(sessionMiddleware);
+};

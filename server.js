@@ -2,20 +2,15 @@ const express = require('express');
 const http = require('http');
 const { Server } = require("socket.io");
 const fs = require("fs");
-const { sessionMiddleware, useSocketMiddleware } = require('./middlewares');
+const onConnection = require('./handlers');
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.set('view engine', 'ejs');
-app.use(express.static("public"))
-app.use(sessionMiddleware);
-useSocketMiddleware(io, sessionMiddleware);
+require('./middlewares')(app, express, io);
 
-io.on("connection", (socket) => {
-  console.log(socket.request.session);
-});
+io.on("connection", onConnection);
 
 app.get("/", (req, res) => {
     res.render("index");
@@ -32,7 +27,6 @@ app.get("/orderItems", (req, res) => {
 })
 
 app.get("/chat", (req, res) => {
-    console.log("Chat: ", req.session);
     res.render("chat")
 })
 

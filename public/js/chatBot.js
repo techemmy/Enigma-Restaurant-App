@@ -26,7 +26,7 @@ class ChatBot {
            e.preventDefault();
            const input = this.getUserInput();
            if (!this.validate(input)) return;
-
+            this.clearUserInput();
            // if we're waiting for user to pick an option
            if (this.state === this.states[0]) {
                this.sendMessage(input, "white", true)
@@ -60,6 +60,10 @@ class ChatBot {
 
     getUserInput() {
         return this.userInput.value;
+    }
+
+    clearUserInput() {
+        this.userInput.value = "";
     }
 
     validate(input) {

@@ -7,7 +7,7 @@ class OrderItem {
 
     get totalPrice() {
         if (!this.quantity) return this._price;
-        return this._price * this.quantity;
+        return this.price * this.quantity;
     }
 }
 

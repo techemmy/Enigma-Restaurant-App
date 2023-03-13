@@ -10,6 +10,11 @@ class Customer {
         // TODO: implement adding order items to this.currentOrder
         console.log(orderItem);
     }
+
+    static createFromSession(customerObject) {
+        return new this(customerObject.name, customerObject.currentOrder,
+            customerObject.hasCurrentOrder);
+    }
 }
 
 export default Customer;

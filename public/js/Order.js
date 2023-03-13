@@ -5,7 +5,7 @@ class Order {
         2: "ordered"
     }
     constructor() {
-        this.state = this.states[0];
+        this.state = this.states[1];
         this.orderItems = [];
     }
 
@@ -14,9 +14,10 @@ class Order {
     }
 
     addItem(orderItem) {
+        console.log(this.state);
         // if order is active
-        if (this.states[this.state] === this.states[1]) {
-            this.orderItems.push(orderItem);
+        if (this.isActive()) {
+            return this.orderItems.push(orderItem);
         }
     }
 }

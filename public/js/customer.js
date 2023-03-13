@@ -19,9 +19,9 @@ class Customer {
 
     static createFromSession(customerObject) {
         const customer =  new this(customerObject.name);
-        customer.currentOrder = new Order();
 
         if (customerObject.currentOrder) {
+            customer.currentOrder = new Order();
             customerObject.currentOrder.orderItems.forEach(orderItemObj => {
                 const orderItem = OrderItem.createFromObject(orderItemObj);
                 customer.currentOrder.orderItems.push(orderItem);

@@ -1,14 +1,18 @@
+import Order from "./Order.js";
+
 class Customer {
     constructor (name) {
         this.name = name;
         this.currentOrder = null;
-        this.hasCurrentOrder = false;
     }
 
     placeOrder(orderItem) {
-        // TODO: create Order object to do the below
-        // TODO: implement adding order items to this.currentOrder
-        console.log(orderItem);
+        if (this.currentOrder && this.currentOrder.isActive()) {
+            this.currentOrder.addItem(orderItem);
+        } else {
+            this.currentOrder = new Order();
+            this.currentOrder.addItem(orderItem);
+        }
     }
 
     static createFromSession(customerObject) {

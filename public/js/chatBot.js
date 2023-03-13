@@ -18,8 +18,7 @@ class ChatBot {
         0: "CANCEL",
         1: "CONFIRM",
     }
-    constructor(socket, user, messages, userInput, submitBtn) {
-        this.socket = socket;
+    constructor(user, messages, userInput, submitBtn) {
         this.state = this.states[0];
         this.customer = user;
         this.messages = messages;

@@ -20,7 +20,6 @@ class Customer {
     static createFromSession(customerObject) {
         const customer =  new this(customerObject.name);
         customer.currentOrder = new Order();
-        console.log(customerObject);
 
         if (customerObject.currentOrder) {
             customerObject.currentOrder.orderItems.forEach(orderItemObj => {

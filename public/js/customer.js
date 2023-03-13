@@ -5,6 +5,7 @@ class Customer {
     constructor (name) {
         this.name = name;
         this.currentOrder = null;
+        this.orderHistory = [];
     }
 
     placeOrder(orderItem) {
@@ -19,12 +20,14 @@ class Customer {
     static createFromSession(customerObject) {
         const customer =  new this(customerObject.name);
         customer.currentOrder = new Order();
+        console.log(customerObject);
 
-        customerObject.currentOrder.orderItems.forEach(orderItemObj => {
-            const orderItem = OrderItem.createFromObject(orderItemObj);
-            customer.currentOrder.orderItems.push(orderItem);
-        })
-
+        if (customerObject.currentOrder) {
+            customerObject.currentOrder.orderItems.forEach(orderItemObj => {
+                const orderItem = OrderItem.createFromObject(orderItemObj);
+                customer.currentOrder.orderItems.push(orderItem);
+            })
+        }
         return customer;
     }
 }

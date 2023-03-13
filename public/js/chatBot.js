@@ -1,3 +1,4 @@
+import Order from "./Order.js";
 import OrderItem from "./orderItem.js";
 
 class ChatBot {
@@ -179,7 +180,16 @@ class ChatBot {
     }
 
     cancelOrder() {
-        console.log("cancel order")
+        if (this.customer.currentOrder) {
+            this.customer.currentOrder.state = this.customer.currentOrder.states[0];
+            this.customer.orderHistory.push(this.customer.currentOrder);
+            this.customer.currentOrder = null;
+            this.updateCustomerSession();
+            this.resetVariables();
+            this.sendMessage({message: "Your current order has been cancelled!", user: true});
+        } else {
+            this.sendMessage({message: "You do not have a current order"});
+        }
     }
 }
 

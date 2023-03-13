@@ -1,3 +1,5 @@
+import OrderItem from "./orderItem.js";
+
 class Order {
     states = {
         0: "cancelled",
@@ -25,6 +27,18 @@ class Order {
             total += orderItem.totalPrice;
         })
         return total;
+    }
+
+    static createFromObject(OrderObject) {
+        const order = new this();
+        order.state = OrderObject.state;
+
+        OrderObject.orderItems.forEach(orderItemObj => {
+            const orderItem = OrderItem.createFromObject(orderItemObj);
+            order.orderItems.push(orderItem);
+        })
+
+        return order;
     }
 }
 

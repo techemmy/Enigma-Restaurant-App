@@ -1,5 +1,4 @@
 import Order from "./Order.js";
-import OrderItem from "./orderItem.js";
 
 class Customer {
     constructor (name) {
@@ -19,13 +18,10 @@ class Customer {
 
     static createFromSession(customerObject) {
         const customer =  new this(customerObject.name);
-
+        let order;
         if (customerObject.currentOrder) {
-            customer.currentOrder = new Order();
-            customerObject.currentOrder.orderItems.forEach(orderItemObj => {
-                const orderItem = OrderItem.createFromObject(orderItemObj);
-                customer.currentOrder.orderItems.push(orderItem);
-            })
+            order = Order.createFromObject(customerObject.currentOrder);
+            customer.currentOrder = order;
         }
         return customer;
     }

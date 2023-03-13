@@ -18,15 +18,15 @@ document.addEventListener("DOMContentLoaded", () => {
       while (!username || !username.trim()) {
         username = prompt("Enter your username: ");
       }
-      customer = new Customer(username, socket);
-      chatBot = new ChatBot(customer, messagesContainer, userInputBox, submitBtn);
-      customer.updateSession();
+      customer = new Customer(username);
+      chatBot = new ChatBot(socket, customer, messagesContainer, userInputBox, submitBtn);
+      chatBot.updateCustomerSession();
     });
 
     socket.on("customer:post", customerSession => {
         const customerObj = customerSession.customer;
         customer = Customer.createFromSession(customerObj)
-        chatBot = new ChatBot(customer, messagesContainer, userInputBox, submitBtn);
+        chatBot = new ChatBot(socket, customer, messagesContainer, userInputBox, submitBtn);
     })
 
 })

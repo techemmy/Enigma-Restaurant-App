@@ -22,7 +22,7 @@ class Order {
     getTotal() {
         let total = 0;
         this.orderItems.forEach(orderItem => {
-            total += orderItem.price;
+            total += orderItem.totalPrice;
         })
         return total;
     }

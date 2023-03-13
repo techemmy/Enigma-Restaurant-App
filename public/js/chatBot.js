@@ -1,4 +1,3 @@
-import Order from "./Order.js";
 import OrderItem from "./orderItem.js";
 
 class ChatBot {

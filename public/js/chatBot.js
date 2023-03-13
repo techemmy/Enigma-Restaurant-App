@@ -171,7 +171,16 @@ class ChatBot {
     }
 
     getOrderHistory() {
-        console.log("get order history")
+        const orderHistory = this.customer.orderHistory;
+        if (orderHistory.length > 0) {
+            this.sendMessage({message: "Here's it is:"})
+            for (let i = 0; i < orderHistory.length; i++) {
+                const order = orderHistory[i];
+                this.sendMessage({message: `${i+1}: "${order.state}" containing ${order.getItemNames()} with a total of $${order.getTotal()}`})
+            }
+        } else {
+            this.sendMessage({message: "Nothing in your history yet 🤔"})
+        }
     }
 
     checkoutOrder() {

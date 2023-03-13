@@ -29,6 +29,17 @@ class Order {
         return total;
     }
 
+    getItemNames() {
+        /* concatenates the names of the order items into a string and return it */
+        let names = []
+        this.orderItems.forEach(order => {
+            names.push(order.name);
+        })
+
+        names = "".concat(names);
+        return names;
+    }
+
     static createFromObject(OrderObject) {
         const order = new this();
         order.state = OrderObject.state;

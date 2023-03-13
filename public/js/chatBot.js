@@ -184,7 +184,17 @@ class ChatBot {
     }
 
     checkoutOrder() {
-        console.log("checkout order")
+        if (!this.customer.currentOrder) {
+            this.sendMessage({message: "No order to place"});
+        } else {
+            // change the current order state to ordered
+            this.customer.currentOrder.state = this.customer.currentOrder.states[2];
+            this.sendMessage({message: "order placed"});
+            this.customer.orderHistory.push(this.customer.currentOrder);
+            this.customer.currentOrder = null;
+            this.resetVariables();
+            this.updateCustomerSession();
+        }
     }
 
     cancelOrder() {

@@ -50,19 +50,19 @@ class ChatBot {
                 })
                 this.currentOrderItem = new OrderItem(selectedItem[0], selectedItem[1]);
                 this.state = this.states[2];
-                this.sendMessage({message: "How many of these: "})
+                this.sendMessage({message: "How many: "})
            } else if (this.state === this.states[2]) {
                 this.currentOrderItem.quantity = userInput;
-                this.sendMessage({message: userInput});
+                this.sendMessage({message: userInput, user: true});
                 this.state = this.states[3]
                 this.chatOptions = this.confirmOrCancel;
                 this.showChatOptions();
            } else if (this.state === this.states[3]) {
                const confirmed = this.confirmOrderPlacement(this.confirmOrCancel[userInput]);
                if (confirmed) {
-                    this.sendMessage({message: "Order Item confirmed!"})
+                    this.sendMessage({message: "Order Item confirmed!", user: true})
                 } else {
-                    this.sendMessage({message: "Order Item Cancelled!"})
+                    this.sendMessage({message: "Order Item Cancelled!", error: true})
                 }
                this.resetVariables();
                this.showChatOptions();
@@ -88,9 +88,13 @@ class ChatBot {
 
     }
 
-    sendMessage({message, backgroundColor, user}) {
+    sendMessage({message, user, error}) {
         const text = document.createElement('li');
-        if (user) text.style.backgroundColor = backgroundColor;
+        if (user) {
+            text.style.backgroundColor = "#4390f4";
+        } else if (error) {
+            text.style.backgroundColor = "#ff1515";
+        }
         text.textContent = message;
         this.messages.appendChild(text);
         window.scrollTo(0, document.body.scrollHeight);
@@ -107,11 +111,11 @@ class ChatBot {
     validate(input) {
         if (this.state !== this.states[2]) {
             this.validOptions = Object.keys(this.chatOptions)
-            if(!this.validOptions.includes(input)) return this.sendMessage({message: "Invalid option😩, Try again!"});
+            if(!this.validOptions.includes(input)) return this.sendMessage({message: "Invalid option😩, Try again!", error: true});
         }
 
         if (!input.trim()) return
-        if (isNaN(input)) return this.sendMessage({message: "Please enter a number 🙃"})
+        if (isNaN(input)) return this.sendMessage({message: "Please enter a number 🙃", error: true})
         return true;
     }
 
@@ -148,7 +152,17 @@ class ChatBot {
     }
 
     getCurrentOrder() {
-        console.log("get current order")
+        const currentOrder = this.customer.currentOrder;
+        if (!currentOrder) {
+            return this.sendMessage({message: "You have no current order 😬"});
+        }
+
+        this.sendMessage({message: "Here's what you have in your order:"});
+        currentOrder.orderItems.forEach(orderItem => {
+            console.log(orderItem);
+            this.sendMessage({message: `${orderItem.name} worth of $${orderItem.price} `})
+        })
+        this.sendMessage({message: `The total is: $${currentOrder.getTotal()}`})
     }
 
     getOrderHistory() {

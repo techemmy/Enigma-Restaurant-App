@@ -20,6 +20,14 @@ class Order {
             return this.orderItems.push(orderItem);
         }
     }
+
+    getTotal() {
+        let total = 0;
+        this.orderItems.forEach(orderItem => {
+            total += orderItem.price;
+        })
+        return total;
+    }
 }
 
 export default Order;

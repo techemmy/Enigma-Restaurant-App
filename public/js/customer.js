@@ -1,9 +1,10 @@
 import Order from "./Order.js";
 
 class Customer {
-    constructor (name) {
+    constructor (name, socket) {
         this.name = name;
         this.currentOrder = null;
+        this.socket = socket;
     }
 
     placeOrder(orderItem) {
@@ -13,6 +14,10 @@ class Customer {
             this.currentOrder = new Order();
             this.currentOrder.addItem(orderItem);
         }
+    }
+
+    updateSession() {
+        this.socket.emit("customer:update-session", {customer: this});
     }
 
     static createFromSession(customerObject) {

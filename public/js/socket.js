@@ -11,10 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let chatBot;
     let customer;
 
-    const updateCustomerSession = () => {
-        socket.emit("customer:update-session", {customer});
-    }
-
     socket.emit("customer:get");
 
     socket.on("customer:create", () => {
@@ -22,9 +18,9 @@ document.addEventListener("DOMContentLoaded", () => {
       while (!username || !username.trim()) {
         username = prompt("Enter your username: ");
       }
-      customer = new Customer(username);
+      customer = new Customer(username, socket);
       chatBot = new ChatBot(customer, messagesContainer, userInputBox, submitBtn);
-      updateCustomerSession();
+      customer.updateSession();
     });
 
     socket.on("customer:post", customerSession => {

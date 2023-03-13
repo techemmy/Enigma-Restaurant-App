@@ -165,7 +165,7 @@ class ChatBot {
 
         this.sendMessage({message: "Here's what you have in your order:"});
         currentOrder.orderItems.forEach(orderItem => {
-            this.sendMessage({message: `${orderItem.name} worth of $${orderItem.totalPrice} `})
+            this.sendMessage({message: `${orderItem.name} worth of $${orderItem.price} `})
         })
         this.sendMessage({message: `The total is: $${currentOrder.getTotal()}`})
     }

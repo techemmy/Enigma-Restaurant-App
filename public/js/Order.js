@@ -14,8 +14,6 @@ class Order {
     }
 
     addItem(orderItem) {
-        console.log(this.state);
-        // if order is active
         if (this.isActive()) {
             return this.orderItems.push(orderItem);
         }

@@ -18,11 +18,21 @@ class Customer {
 
     static createFromSession(customerObject) {
         const customer =  new this(customerObject.name);
-        let order;
-        if (customerObject.currentOrder) {
-            order = Order.createFromObject(customerObject.currentOrder);
+        const currentOrder = customerObject.currentOrder;
+        const orderHistory = customerObject.orderHistory;
+
+        if (currentOrder) {
+            const order = Order.createFromObject(customerObject.currentOrder);
             customer.currentOrder = order;
         }
+
+        if (orderHistory.length > 0) {
+            orderHistory.forEach(orderObject => {
+                const order = Order.createFromObject(orderObject);
+                customer.orderHistory.push(order);
+            })
+        }
+
         return customer;
     }
 }

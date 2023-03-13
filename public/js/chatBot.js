@@ -18,7 +18,8 @@ class ChatBot {
         0: "CANCEL",
         1: "CONFIRM",
     }
-    constructor(user, messages, userInput, submitBtn) {
+    constructor(socket, user, messages, userInput, submitBtn) {
+        this.socket = socket;
         this.state = this.states[0];
         this.customer = user;
         this.messages = messages;
@@ -159,7 +160,6 @@ class ChatBot {
 
         this.sendMessage({message: "Here's what you have in your order:"});
         currentOrder.orderItems.forEach(orderItem => {
-            console.log(orderItem);
             this.sendMessage({message: `${orderItem.name} worth of $${orderItem.price} `})
         })
         this.sendMessage({message: `The total is: $${currentOrder.getTotal()}`})

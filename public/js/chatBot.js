@@ -15,8 +15,8 @@ class ChatBot {
         3: "CONFIRM_ORDERITEM"
     }
     confirmOrCancel = {
-        0: "CANCEL",
-        1: "CONFIRM",
+        0: "To Cancel",
+        1: "To Confirm",
     }
     chatOptionsTemplate = `
         <div class='msg {{direction}}-msg'>
@@ -65,27 +65,33 @@ class ChatBot {
         submitBtn.addEventListener('click', (e) => {
            e.preventDefault();
            const userInput = this.getUserInput();
+           this.clearUserInput();
            if (!this.validate(userInput)) return;
-            this.clearUserInput();
-           // if we're waiting for user to pick an option
+
+           // if we're waiting for customer to pick an option from the commands
            if (this.state === this.states[0]) {
                this.sendMessage({message: userInput, user: true })
                this.processInput(parseInt(userInput));
+
+           // if we're waiting for customer to select order item
            } else if (this.state === this.states[1]) {
                 const selectedItem = this.orderItems[userInput];
                 this.sendMessage({
-                    message: `You selected: ${selectedItem[0]}`,
-                    user: true
+                    message: `You selected: ${selectedItem[0]}`
                 })
                 this.currentOrderItem = new OrderItem(selectedItem[0], selectedItem[1]);
                 this.state = this.states[2];
                 this.sendMessage({message: "How many: "})
+
+            // if we're waiting for user to select quantity of order item
            } else if (this.state === this.states[2]) {
                 this.currentOrderItem.quantity = userInput;
                 this.sendMessage({message: userInput, user: true});
                 this.state = this.states[3]
                 this.chatOptions = this.confirmOrCancel;
                 this.showChatOptions();
+
+            // if we're waiting for user to confirm OrderItem before adding it to Order
            } else if (this.state === this.states[3]) {
                const confirmed = this.confirmOrderPlacement(this.confirmOrCancel[userInput]);
                this.sendMessage({message: userInput, user: true});
@@ -139,7 +145,7 @@ class ChatBot {
     }
 
     getUserInput() {
-        return this.userInput.value;
+        return this.userInput.value.trim();
     }
 
     clearUserInput() {

@@ -1,9 +1,9 @@
 :root {
-  --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --body-bg: linear-gradient(36deg, rgba(243,183,0,1) 0%, rgba(242,91,10,1) 54%, rgba(242,255,213,0.9780505952380952) 100%);;
   --color-white: #fff;
   --border: 2px solid #ddd;
   --primary-bg: #f25b0a;
-  --seconday-bg: #579ffb;
+  --seconday-bg: #444;
 }
 
 html {
@@ -47,7 +47,7 @@ body {
   padding: 10px;
   border-bottom: var(--border);
   background: var(--primary-bg);
-  color: #eee;
+  color: var(--color-white);
 }
 
 .msger-chat {

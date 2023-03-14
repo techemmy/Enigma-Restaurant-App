@@ -2,11 +2,11 @@ import OrderItem from "./orderItem.js";
 
 class ChatBot {
     commands = {
-        1: "Place an Order",
-        97: "See current order",
-        98: "See order history",
-        99: "Checkout order",
-        0: "Cancel Order"
+        1: "To place an Order",
+        97: "To see current order",
+        98: "To check order history",
+        99: "To checkout current Order",
+        0: "To cancel current Order"
     }
     states = {
         0: "CHOOSE_OPTION",
@@ -18,6 +18,34 @@ class ChatBot {
         0: "CANCEL",
         1: "CONFIRM",
     }
+    chatOptionsTemplate = `
+        <div class='msg {{direction}}-msg'>
+            <div class='msg-bubble' style='background-color:{{background}}'>
+                <div class='msg-info'>
+                    <div class='msg-info-name'>{{name}}</div>
+                </div>
+
+                <div class='msg-text' id='msg-list'>
+                    {{#each message}}
+                    <p>{{this}}</p>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+      `;
+    singleMessageTemplate = `
+        <div class='msg {{direction}}-msg'>
+            <div class='msg-bubble' style='background-color:{{background}}'>
+                <div class='msg-info'>
+                    <div class='msg-info-name'>{{name}}</div>
+                </div>
+
+                <div class='msg-text' id='msg-list'>
+                    {{message}}
+                </div>
+            </div>
+        </div>
+      `;
     constructor(socket, user, messages, userInput, submitBtn) {
         this.socket = socket;
         this.state = this.states[0];
@@ -60,8 +88,9 @@ class ChatBot {
                 this.showChatOptions();
            } else if (this.state === this.states[3]) {
                const confirmed = this.confirmOrderPlacement(this.confirmOrCancel[userInput]);
+               this.sendMessage({message: userInput, user: true});
                if (confirmed) {
-                    this.sendMessage({message: "Order Item confirmed!", user: true})
+                    this.sendMessage({message: "Order Item confirmed!"})
                 } else {
                     this.sendMessage({message: "Order Item Cancelled!", error: true})
                 }
@@ -77,9 +106,11 @@ class ChatBot {
 
     showChatOptions() {
         this.sendMessage({message: "Select one of the following to proceed:"});
+        let message = [];
         for (let [code, action] of Object.entries(this.chatOptions)) {
-            this.sendMessage({message: `Select ${code} to ${action}`});
+            message.push(`Select ${code}: ${action}`);
         }
+        this.sendMessage({message});
     }
 
     resetVariables() {
@@ -90,15 +121,21 @@ class ChatBot {
     }
 
     sendMessage({message, user, error}) {
-        const text = document.createElement('li');
-        if (user) {
-            text.style.backgroundColor = "#4390f4";
-        } else if (error) {
-            text.style.backgroundColor = "#ff1515";
+        let template;
+        if (typeof message === "object") {
+            template = Handlebars.compile(this.chatOptionsTemplate);
+        } else {
+            template = Handlebars.compile(this.singleMessageTemplate);
         }
-        text.textContent = message;
-        this.messages.appendChild(text);
-        window.scrollTo(0, document.body.scrollHeight);
+        const name = user ? this.customer.name : "BOT"
+        const direction = user ? "right" : "left"
+        const background = error ? "red" : ""
+
+        // execute the compiled template and append it to messages container
+        const htmlStr = template({name, message, direction, background });
+
+        this.messages.innerHTML += htmlStr;
+        this.messages.scrollTo(0, this.messages.scrollHeight);
     }
 
     getUserInput() {
@@ -163,17 +200,19 @@ class ChatBot {
             return this.sendMessage({message: "You have no current order 😬"});
         }
 
-        this.sendMessage({message: "Here's what you have in your order:"});
+        let orderMessages = []
+        orderMessages.push("Here's what you have in your order:");
         currentOrder.orderItems.forEach(orderItem => {
-            this.sendMessage({message: `${orderItem.name} worth of $${orderItem.totalPrice} `})
+            orderMessages.push(`${orderItem.name} worth of $${orderItem.totalPrice}`);
         })
+        this.sendMessage({message: orderMessages})
         this.sendMessage({message: `The total is: $${currentOrder.getTotal()}`})
     }
 
     getOrderHistory() {
         const orderHistory = this.customer.orderHistory;
         if (orderHistory.length > 0) {
-            this.sendMessage({message: "Here's it is:"})
+            this.sendMessage({message: "Here it is:"})
             for (let i = 0; i < orderHistory.length; i++) {
                 const order = orderHistory[i];
                 this.sendMessage({message: `${i+1}: "${order.state}" containing ${order.getItemNames()} with a total of $${order.getTotal()}`})
@@ -185,11 +224,11 @@ class ChatBot {
 
     checkoutOrder() {
         if (!this.customer.currentOrder) {
-            this.sendMessage({message: "No order to place"});
+            this.sendMessage({message: "No order to place 😢"});
         } else {
             // change the current order state to ordered
             this.customer.currentOrder.state = this.customer.currentOrder.states[2];
-            this.sendMessage({message: "order placed"});
+            this.sendMessage({message: "Order placed 🥳"});
             this.customer.orderHistory.push(this.customer.currentOrder);
             this.customer.currentOrder = null;
             this.resetVariables();

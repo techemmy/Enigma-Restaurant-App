@@ -41,13 +41,15 @@ class ChatBot {
                 </div>
 
                 <div class='msg-text' id='msg-list'>
-                    {{message}}
+                    {{{message}}}
                 </div>
             </div>
         </div>
       `;
     constructor(socket, user, messages, userInput, submitBtn) {
         this.socket = socket;
+        // the `this.state` variable tells us what stage of communication the bot is in with the user
+        // as a user chooses a command from the `chatOptions`, the state of the object changes for next `chatOptions`
         this.state = this.states[0];
         this.customer = user;
         this.messages = messages;
@@ -56,10 +58,12 @@ class ChatBot {
         this.orderItems = null;
         this.currentOrderItem = null;
 
+        // this.chatOptions changes as user progresses, it holds the current list of available commands a user choose from
+        // it is initiated with the list of commands at first. it is related with the object state variable
         this.chatOptions = this.commands;
-        this.validOptions = null;
+        this.validOptions = null; // this holds an array of the keys of the current `this.chatOptions` when validating input
 
-        this.showWelcomeMessage(`Welcome ${this.customer.name}`);
+        this.sendWelcome(`Welcome <b>${this.customer.name}</b>!`);
         this.showChatOptions();
 
         submitBtn.addEventListener('click', (e) => {
@@ -71,7 +75,7 @@ class ChatBot {
            // if we're waiting for customer to pick an option from the commands
            if (this.state === this.states[0]) {
                this.sendMessage({message: userInput, user: true })
-               this.processInput(parseInt(userInput));
+               this.getResponse(parseInt(userInput)); // it calls other methods based on the option chosen by the user
 
            // if we're waiting for customer to select order item
            } else if (this.state === this.states[1]) {
@@ -101,12 +105,12 @@ class ChatBot {
                     this.sendMessage({message: "Order Item Cancelled!", error: true})
                 }
                this.resetVariables();
-               this.showChatOptions();
+               this.sendMessage({message: `Press 97: ${this.commands[97]}`});
            }
         })
     }
 
-    showWelcomeMessage(message) {
+    sendWelcome(message) {
         this.sendMessage({message})
     }
 
@@ -120,10 +124,10 @@ class ChatBot {
     }
 
     resetVariables() {
+        // resets the variables whenever a process of ordering has been completed or cancelled
         this.chatOptions = this.commands;
         this.state = this.states[0]
         this.currentOrderItem = null;
-
     }
 
     sendMessage({message, user, error}) {
@@ -163,7 +167,8 @@ class ChatBot {
         return true;
     }
 
-    processInput(message) {
+    getResponse(message) {
+        // the function calls other methods based on the option chosen by the user
         if (message === 1) this.placeOrder();
         else if (message === 97) this.getCurrentOrder();
         else if (message === 98) this.getOrderHistory();
@@ -213,6 +218,10 @@ class ChatBot {
         })
         this.sendMessage({message: orderMessages})
         this.sendMessage({message: `The total is: $${currentOrder.getTotal()}`})
+
+        setTimeout(() => {
+            this.showChatOptions();
+        }, 2000);
     }
 
     getOrderHistory() {
@@ -221,7 +230,7 @@ class ChatBot {
             this.sendMessage({message: "Here it is:"})
             for (let i = 0; i < orderHistory.length; i++) {
                 const order = orderHistory[i];
-                this.sendMessage({message: `${i+1}: "${order.state}" containing ${order.getItemNames()} with a total of $${order.getTotal()}`})
+                this.sendMessage({message: `${i+1}: Item "${order.state}" containing ${order.getItemNames()} with a total of $${order.getTotal()}`})
             }
         } else {
             this.sendMessage({message: "Nothing in your history yet 🤔"})
@@ -249,7 +258,7 @@ class ChatBot {
             this.customer.currentOrder = null;
             this.updateCustomerSession();
             this.resetVariables();
-            this.sendMessage({message: "Your current order has been cancelled!", user: true});
+            this.sendMessage({message: "Your current order has been cancelled!"});
         } else {
             this.sendMessage({message: "You do not have a current order"});
         }

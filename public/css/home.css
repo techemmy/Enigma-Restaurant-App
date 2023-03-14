@@ -1,10 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Fira+Sans:100,100i,200,200i,300,300i,400,400i,500,600,700,700i,800,800i,900);
 :root {
-  --body-bg: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  --body-bg: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(160,32,240,1) 100%);
   --color-white: #fff;
   --border: 2px solid #ddd;
-  --primary-bg: #f25b0a;
-  --seconday-bg: #579ffb;
+  --primary-bg: #A020F0;
+  --secondary-bg: #444;
 }
 
 *,

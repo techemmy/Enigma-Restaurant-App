@@ -1,9 +1,9 @@
 :root {
-  --body-bg: linear-gradient(90deg, #fcff9e 0%, #c67700 100%);
+  --body-bg: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(160,32,240,1) 100%);
   --color-white: #fff;
   --border: 2px solid #ddd;
-  --primary-bg: #f25b0a;
-  --seconday-bg: #444;
+  --primary-bg: #A020F0;
+  --secondary-bg: #444;
 }
 
 html {
@@ -47,17 +47,29 @@ body {
   justify-content: space-between;
   padding: 10px;
   border-bottom: var(--border);
-  background: var(--primary-bg);
+  background: #eee;
   color: var(--color-white);
 }
 
 .msger-header .msger-header-title {
   width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.msger-header-title img {
+.msger-header-title img.logo {
   width: 100px;
+}
+
+.msger-header-title .fa-arrow-left {
+  margin-right: 5px;
+}
+
+.msger-header-title a {
+  display: flex;
+  align-items: center;
 }
 
 .msger-chat {
@@ -96,7 +108,7 @@ body {
   max-width: 450px;
   padding: 15px;
   border-radius: 15px;
-  background: var(--seconday-bg);
+  background: var(--secondary-bg);
   color: var(--color-white);
 }
 .msg-info {

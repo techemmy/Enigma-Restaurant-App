@@ -1,5 +1,5 @@
 :root {
-  --body-bg: linear-gradient(36deg, rgba(243,183,0,1) 0%, rgba(242,91,10,1) 54%, rgba(242,255,213,0.9780505952380952) 100%);;
+  --body-bg: linear-gradient(90deg, #fcff9e 0%, #c67700 100%);
   --color-white: #fff;
   --border: 2px solid #ddd;
   --primary-bg: #f25b0a;
@@ -43,11 +43,21 @@ body {
 
 .msger-header {
   display: flex;
+  align-items: center;
   justify-content: space-between;
   padding: 10px;
   border-bottom: var(--border);
   background: var(--primary-bg);
   color: var(--color-white);
+}
+
+.msger-header .msger-header-title {
+  width: 100%;
+  text-align: center;
+}
+
+.msger-header-title img {
+  width: 100px;
 }
 
 .msger-chat {

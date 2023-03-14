@@ -2693,9 +2693,6 @@ a.text-dark:hover {
 .bg-dark p {
   color: #fff;
 }
-.bg-dark a {
-  color: rgba(255, 255, 255, 0.7);
-}
 .bg-dark a:hover {
   color: rgba(255, 255, 255, 0.85);
 }

@@ -46,7 +46,7 @@ class ChatBot {
             </div>
         </div>
       `;
-    constructor(socket, user, messages, userInput, submitBtn) {
+    constructor(socket, user, messages, userInput, submitBtn, currencyLabel) {
         this.socket = socket;
         // the `this.state` variable tells us what stage of communication the bot is in with the user
         // as a user chooses a command from the `chatOptions`, the state of the object changes for next `chatOptions`
@@ -57,6 +57,8 @@ class ChatBot {
         this.submitBtn = submitBtn;
         this.orderItems = null;
         this.currentOrderItem = null;
+        this.currencyLabel = currencyLabel;
+        this.currency = null;
 
         // this.chatOptions changes as user progresses, it holds the current list of available commands a user choose from
         // it is initiated with the list of commands at first. it is related with the object state variable
@@ -64,6 +66,7 @@ class ChatBot {
         this.validOptions = null; // this holds an array of the keys of the current `this.chatOptions` when validating input
 
         this.sendWelcome(`Welcome <b>${this.customer.name}</b>!`);
+        (async() => await this.getOrderItems())();
         this.showChatOptions();
 
         submitBtn.addEventListener('click', (e) => {
@@ -116,11 +119,11 @@ class ChatBot {
 
     showChatOptions() {
         this.sendMessage({message: "Select one of the following to proceed:"});
-        let message = [];
+        let messages = [];
         for (let [code, action] of Object.entries(this.chatOptions)) {
-            message.push(`Select ${code}: ${action}`);
+            messages.push(`Select ${code}: ${action}`);
         }
-        this.sendMessage({message});
+        this.sendMessage({message: messages});
     }
 
     resetVariables() {
@@ -179,7 +182,10 @@ class ChatBot {
     async getOrderItems() {
         try {
             const data = await fetch("/orderItems");
-            const response = await data.json()
+            const response = JSON.parse(await data.json());
+            this.orderItems = response.items;
+            this.setCurrency(response.currency);
+
             return response
         } catch (error) {
             return this.sendMessage({message: error.message});
@@ -187,10 +193,18 @@ class ChatBot {
     }
 
     async placeOrder() {
-        this.orderItems = JSON.parse(await this.getOrderItems());
+        if (!this.orderItems && !this.currency) {
+            // fetch order items from the server only if it hasn't been fetched before
+            await this.getOrderItems();
+        }
         this.chatOptions = this.orderItems;
         this.showChatOptions();
         this.state = this.states[1];
+    }
+
+    setCurrency(currency) {
+        this.currency = currency;
+        this.currencyLabel.textContent += this.currency;
     }
 
     updateCustomerSession() {
@@ -214,10 +228,10 @@ class ChatBot {
         let orderMessages = []
         orderMessages.push("Here's what you have in your order:");
         currentOrder.orderItems.forEach(orderItem => {
-            orderMessages.push(`${orderItem.name} worth of $${orderItem.totalPrice}`);
+            orderMessages.push(`${orderItem.name} worth of ${this.currency}${orderItem.totalPrice}`);
         })
         this.sendMessage({message: orderMessages})
-        this.sendMessage({message: `The total is: $${currentOrder.getTotal()}`})
+        this.sendMessage({message: `The total is: ${this.currency}${currentOrder.getTotal()}`})
 
         setTimeout(() => {
             this.showChatOptions();
@@ -230,7 +244,7 @@ class ChatBot {
             this.sendMessage({message: "Here it is:"})
             for (let i = 0; i < orderHistory.length; i++) {
                 const order = orderHistory[i];
-                this.sendMessage({message: `${i+1}: Item "${order.state}" containing ${order.getItemNames()} with a total of $${order.getTotal()}`})
+                this.sendMessage({message: `${i+1}: Item "${order.state}" containing ${order.getItemNames()} with a total of ${this.currency}${order.getTotal()}`})
             }
         } else {
             this.sendMessage({message: "Nothing in your history yet 🤔"})

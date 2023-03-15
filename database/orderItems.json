@@ -1,50 +1,53 @@
  {
-  "1": [
-    "Chicken Bali",
-    "3900"
-  ],
-  "2": [
-    "Extravaganza",
-    "3900"
-  ],
-  "3": [
-    "BBQ Mega Meat",
-    "3900"
-  ],
-  "4": [
-    "Deluxe",
-    "3500"
-  ],
-  "5": [
-    "Meatzza",
-    "3500"
-  ],
-  "6": [
-    "Shawarma Pizza",
-    "3500"
-  ],
-  "7": [
-    "Pepperoni Supreme",
-    "3200"
-  ],
-  "8": [
-    "Veggie Supreme",
-    "3200"
-  ],
-  "9": [
-    "BBQ Beef",
-    "3200"
-  ],
-  "10": [
-    "Chicken Supreme",
-    "3200"
-  ],
-  "11": [
-    "Chicken Supreme",
-    "3500"
-  ],
-  "12": [
-    "Half & Half",
-    "2900"
-  ]
+  "items": {
+    "1": [
+      "Chicken Bali",
+      "3900"
+    ],
+    "2": [
+      "Extravaganza",
+      "3900"
+    ],
+    "3": [
+      "BBQ Mega Meat",
+      "3900"
+    ],
+    "4": [
+      "Deluxe",
+      "3500"
+    ],
+    "5": [
+      "Meatzza",
+      "3500"
+    ],
+    "6": [
+      "Shawarma Pizza",
+      "3500"
+    ],
+    "7": [
+      "Pepperoni Supreme",
+      "3200"
+    ],
+    "8": [
+      "Veggie Supreme",
+      "3200"
+    ],
+    "9": [
+      "BBQ Beef",
+      "3200"
+    ],
+    "10": [
+      "Chicken Supreme",
+      "3200"
+    ],
+    "11": [
+      "Chicken Supreme",
+      "3500"
+    ],
+    "12": [
+      "Half & Half",
+      "2900"
+    ]
+  },
+  "currency": "₦"
 }

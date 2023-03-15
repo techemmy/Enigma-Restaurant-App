@@ -5,7 +5,7 @@ const sessionConfiguration = {
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { httpOnly: true, maxAge: ONEDAY }
+    cookie: { maxAge: ONEDAY }
   };
 
 module.exports = {

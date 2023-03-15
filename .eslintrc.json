@@ -11,5 +11,8 @@
         "sourceType": "module"
     },
     "rules": {},
-    "ignorePatterns": ["public/js/jquery-3.4.1.js", "public/js/bootstrap.bundle.js"]
+    "ignorePatterns": [
+        "public/js/jquery-3.4.1.js",
+        "public/js/bootstrap.bundle.js"
+    ]
 }

@@ -1198,25 +1198,25 @@ small {
 
 .fade:not(.show) {
     opacity: 0;
-  }
+}
 
-  .collapse:not(.show) {
+.collapse:not(.show) {
     display: none;
-  }
+}
 .collapsing {
     position: relative;
     height: 0;
     overflow: hidden;
     -webkit-transition: height 0.35s ease;
     transition: height 0.35s ease;
-  }
+}
 
-  @media (prefers-reduced-motion: reduce) {
+@media (prefers-reduced-motion: reduce) {
     .collapsing {
-      -webkit-transition: none;
-      transition: none;
+        -webkit-transition: none;
+        transition: none;
     }
-  }
+}
 @media (max-width: 575.98px) {
     .navbar-expand-sm > .container {
         padding-right: 0;

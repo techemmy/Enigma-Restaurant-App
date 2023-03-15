@@ -1,13 +1,13 @@
 class OrderItem {
     constructor(name, price) {
-        this.name = name;
-        this.price = parseFloat(price);
-        this.quantity = null;
+        this.name = name
+        this.price = parseFloat(price)
+        this.quantity = null
     }
 
     get totalPrice() {
-        if (!this.quantity) return this._price;
-        return this.price * this.quantity;
+        if (!this.quantity) return this._price
+        return this.price * this.quantity
     }
 
     static createFromObject(itemObject) {
@@ -20,10 +20,10 @@ class OrderItem {
            @param {string} itemObject.quantity The quantity of the OrderItem object
            @return {OrderItem} the OrderItem instance made from name, price and quantity
         */
-        const item = new this(itemObject.name, itemObject.price);
-        item.quantity = itemObject.quantity;
-        return item;
+        const item = new this(itemObject.name, itemObject.price)
+        item.quantity = itemObject.quantity
+        return item
     }
 }
 
-export default OrderItem;
+export default OrderItem

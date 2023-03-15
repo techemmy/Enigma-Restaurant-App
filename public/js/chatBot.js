@@ -136,8 +136,10 @@ class ChatBot {
     sendMessage({message, user, error}) {
         let template;
         if (typeof message === "object") {
+            // eslint-disable-next-line no-undef
             template = Handlebars.compile(this.chatOptionsTemplate);
         } else {
+            // eslint-disable-next-line no-undef
             template = Handlebars.compile(this.singleMessageTemplate);
         }
         const name = user ? this.customer.name : "BOT"

@@ -13,6 +13,6 @@
     },
     "rules": {
     },
-    "eslintIgnore": ["package.json", "package-lock.json"]
+    "ignorePatterns": ["package.json", "package-lock.json"]
 
 }

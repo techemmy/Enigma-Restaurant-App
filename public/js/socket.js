@@ -7,6 +7,7 @@ const submitBtn = document.querySelector("#submitBtn");
 const currencyLabel = document.querySelector("#currency");
 const loader = document.querySelector("#loader");
 
+// eslint-disable-next-line no-undef
 const socket = io();
 
 document.addEventListener("DOMContentLoaded", () => {

@@ -1,6 +1,6 @@
 require('dotenv').config();
 
-ONEDAY = 1000 * 60 * 60 * 24;
+const ONEDAY = 1000 * 60 * 60 * 24;
 const sessionConfiguration = {
     secret: process.env.SECRET,
     name: "EnigmaPizza",

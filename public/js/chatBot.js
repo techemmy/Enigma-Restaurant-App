@@ -285,6 +285,11 @@ class ChatBot {
     checkoutOrder() {
         if (!this.customer.currentOrder) {
             this.sendMessage({ message: 'No order to place 😢' })
+            setTimeout(() => {
+                this.sendMessage({
+                    message: `Press 1 ${this.commands[1].toLowerCase()}`,
+                })
+            }, 2000)
         } else {
             // change the current order state to ordered
             this.customer.currentOrder.state =

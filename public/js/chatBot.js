@@ -61,19 +61,19 @@ class ChatBot {
         this.currency = null;
 
         // this.chatOptions changes as user progresses, it holds the current list of available commands a user choose from
-        // it is initiated with the list of commands at first. it is related with the object state variable
+        // it is initiated with the list of commands `this.commands` at first. it is related with the object state variable
         this.chatOptions = this.commands;
         this.validOptions = null; // this holds an array of the keys of the current `this.chatOptions` when validating input
 
         this.sendWelcome(`Welcome <b>${this.customer.name}</b>!`);
-        (async() => await this.getOrderItems())();
+        (async() => await this.getOrderItems())(); // get the order items from the server
         this.showChatOptions();
 
         submitBtn.addEventListener('click', (e) => {
            e.preventDefault();
            const userInput = this.getUserInput();
-           this.clearUserInput();
-           if (!this.validate(userInput)) return;
+           this.clearUserInput(); // clear the html input box
+           if (!this.validate(userInput)) return; // stop here if the user input is invalid
 
            // if we're waiting for customer to pick an option from the commands
            if (this.state === this.states[0]) {

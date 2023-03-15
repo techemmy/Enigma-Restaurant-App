@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       customer = new Customer(username);
       chatBot = new ChatBot(socket, customer, messagesContainer, userInputBox, submitBtn, currencyLabel);
-      chatBot.updateCustomerSession();
+      chatBot.updateCustomerSession(); // update new customer in server session
     });
 
     socket.on("customer:post", customerSession => {

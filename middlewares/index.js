@@ -1,6 +1,7 @@
 var session = require("express-session");
 const { sessionConfiguration } = require("./../config");
 const MongoStore = require('connect-mongo');
+require("dotenv").config();
 
 
 if (process.env.NODE_ENV === "production") {

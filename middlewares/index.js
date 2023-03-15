@@ -4,10 +4,8 @@ const MongoStore = require('connect-mongo');
 require("dotenv").config();
 
 
-if (process.env.NODE_ENV === "production") {
-  sessionConfiguration.store = MongoStore.create({mongoUrl: process.env.MONGO_URI, dbName: "session-store"})
-  sessionConfiguration.cookie.secure = true;
-}
+sessionConfiguration.store = MongoStore.create({mongoUrl: process.env.MONGO_URI, dbName: "session-store"})
+sessionConfiguration.cookie.secure = true;
 
 const sessionMiddleware = session(sessionConfiguration);
 

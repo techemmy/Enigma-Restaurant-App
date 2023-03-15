@@ -4,3 +4,5 @@ package.json
 package-lock.json
 README.md
 database/
+public/js/jquery-3.4.1.js
+public/js/bootstrap.bundle.js

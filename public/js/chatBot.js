@@ -49,6 +49,15 @@ class ChatBot {
             </div>
         </div>
       `
+    greetings = [
+        'hey',
+        'hi',
+        'hello',
+        'good morning',
+        'good afternoon',
+        'good evening',
+    ]
+
     constructor(socket, user, messages, userInput, submitBtn, currencyLabel) {
         this.socket = socket
         // the `this.state` variable tells us what stage of communication the bot is in with the user
@@ -76,6 +85,19 @@ class ChatBot {
             e.preventDefault()
             const userInput = this.getUserInput()
             this.clearUserInput() // clear the html input box
+
+            // respond to greetings
+            if (this.greetings.includes(userInput.toLowerCase())) {
+                this.sendMessage({ message: `Hello ${this.customer.name}!` })
+                this.sendMessage({
+                    message: "I trust you're having a wonderful time 😁",
+                })
+                setTimeout(() => {
+                    this.showChatOptions()
+                }, 2000)
+                return
+            }
+
             if (!this.validate(userInput)) return // stop here if the user input is invalid
 
             // if we're waiting for customer to pick an option from the commands
